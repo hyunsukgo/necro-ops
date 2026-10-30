@@ -1,0 +1,41 @@
+import typescriptParser from "@typescript-eslint/parser";
+import typescriptPlugin from "@typescript-eslint/eslint-plugin";
+import prettierConfig from "eslint-config-prettier";
+
+/** @type {import('eslint').Linter.FlatConfig[]} */
+export default [
+  {
+    ignores: [
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.js",
+      "**/*.mjs",
+      "**/*.cjs",
+    ],
+  },
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
+    },
+    plugins: {
+      "@typescript-eslint": typescriptPlugin,
+    },
+    rules: {
+      ...typescriptPlugin.configs.recommended.rules,
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
+    },
+  },
+  prettierConfig,
+];

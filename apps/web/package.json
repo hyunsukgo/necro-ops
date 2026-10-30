@@ -1,0 +1,33 @@
+{
+  "name": "web",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "e2e": "playwright test",
+    "seed": "tsx scripts/seed.ts"
+  },
+  "dependencies": {
+    "@necro-ops/autopsy": "workspace:*",
+    "@necro-ops/core": "workspace:*",
+    "@necro-ops/db": "workspace:*",
+    "next": "^15.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.46.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.40",
+    "tailwindcss": "^3.4.0",
+    "tsx": "^4.16.0",
+    "typescript": "^5.5.0"
+  }
+}

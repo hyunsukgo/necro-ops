@@ -1,6 +1,6 @@
 # Implementation Plan — Necro-Ops MVP
 
-- [ ] 1. Scaffold monorepo
+- [x] 1. Scaffold monorepo
   - pnpm workspace, `apps/web` (Next.js + Tailwind), `packages/{core,connectors,autopsy,db}`, shared tsconfig (strict), ESLint/Prettier, Vitest, `.env.example`
   - _Requirements: 9.1_
 
