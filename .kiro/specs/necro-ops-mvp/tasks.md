@@ -4,7 +4,7 @@
   - pnpm workspace, `apps/web` (Next.js + Tailwind), `packages/{core,connectors,autopsy,db}`, shared tsconfig (strict), ESLint/Prettier, Vitest, `.env.example`
   - _Requirements: 9.1_
 
-- [ ] 2. Core domain
+- [x] 2. Core domain
   - [x] 2.1 Define `TimelineEvent`, `Entity`, `Cluster`, `Timeline` types and zod schemas
     - _Requirements: 3.1_
   - [x] 2.2 Implement `redact()` with unit tests for AWS keys, bearer tokens, passwords, emails, JWTs
@@ -13,7 +13,7 @@
     - _Requirements: 3.3_
   - [x] 2.4 Implement `buildTimeline()` (sort + union-find clustering) with tests
     - _Requirements: 4.1, 4.2, 4.5_
-  - [ ] 2.5 Implement `findSuspectedTrigger()` with tests
+  - [x] 2.5 Implement `findSuspectedTrigger()` with tests
     - _Requirements: 4.3_
 
 - [ ] 3. Mock scenarios and mock connector

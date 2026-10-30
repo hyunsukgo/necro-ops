@@ -1,11 +1,13 @@
 /**
  * timeline.ts — sort + union-find clustering for timeline events.
  *
- * Requirements 4.1, 4.2, 4.5:
+ * Requirements 4.1, 4.2, 4.3, 4.5:
  *   4.1 — Order all events chronologically into a single timeline.
  *   4.2 — Group events into clusters when they share at least one entity
  *          (service, namespace, pod, resource address) and occur within a
  *          configurable gap (default 5 minutes).
+ *   4.3 — Flag the earliest change-type event (deploy, infra_change, config
+ *          change) preceding the first critical alert as the suspected trigger.
  *   4.5 — Correlation functions SHALL be pure and deterministic for the same input.
  *
  * Must NOT import from any other package.
@@ -191,4 +193,85 @@ export function buildTimeline(
   );
 
   return { events: sorted, clusters };
+}
+
+// ── findSuspectedTrigger ──────────────────────────────────────────────────────
+
+/** Event kinds considered "change" events — potential triggers. */
+const CHANGE_KINDS = new Set<TimelineEvent["kind"]>(["deploy", "infra_change"]);
+
+/**
+ * Identify the most-likely trigger event in a sorted timeline.
+ *
+ * Algorithm (Requirement 4.3):
+ *   1. Find T = first event in `events` whose severity is `critical`.
+ *      If there is no critical event, return `undefined`.
+ *   2. Build a candidate pool: all events whose:
+ *        - kind is in { deploy, infra_change }, AND
+ *        - timestamp < T's timestamp.
+ *   3. Primary candidate: the LATEST candidate in the pool that shares at
+ *      least one entity with T.
+ *   4. If no primary candidate exists, fall back to the LATEST candidate in
+ *      the pool regardless of entity overlap.
+ *   5. If the pool is empty, return `undefined`.
+ *
+ * The function is pure and deterministic: identical inputs always produce
+ * identical outputs (ties are broken by event `id` for stability).
+ *
+ * @param events  Events sorted chronologically (output of `buildTimeline`).
+ *                The function also works on unsorted arrays; it re-sorts
+ *                internally for determinism.
+ * @returns       The `id` of the suspected trigger event, or `undefined`.
+ */
+export function findSuspectedTrigger(
+  events: readonly TimelineEvent[],
+): string | undefined {
+  if (events.length === 0) return undefined;
+
+  // Sort chronologically (asc), break ties by id for determinism.
+  const sorted = [...events].sort((a, b) => {
+    const diff =
+      new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+    return diff !== 0 ? diff : a.id.localeCompare(b.id);
+  });
+
+  // 1 — Find first critical event (T).
+  const firstCritical = sorted.find((e) => e.severity === "critical");
+  if (!firstCritical) return undefined;
+
+  const tTime = new Date(firstCritical.timestamp).getTime();
+  const tEntityKeys = entityKeySet(firstCritical);
+
+  // 2 — Build candidate pool: change-kind events strictly before T.
+  const candidates = sorted.filter(
+    (e) => CHANGE_KINDS.has(e.kind) && new Date(e.timestamp).getTime() < tTime,
+  );
+
+  if (candidates.length === 0) return undefined;
+
+  // Helper: pick the "latest" event from a list; break ties by id descending
+  // (larger id = later alphabetically) so the result is always deterministic.
+  function latest(pool: TimelineEvent[]): TimelineEvent {
+    return pool.reduce((best, current) => {
+      const timeDiff =
+        new Date(current.timestamp).getTime() -
+        new Date(best.timestamp).getTime();
+      if (timeDiff > 0) return current;
+      if (timeDiff < 0) return best;
+      // Tie: prefer larger id for a stable, deterministic choice.
+      return current.id > best.id ? current : best;
+    });
+  }
+
+  // 3 — Primary: latest change event that shares an entity with T.
+  const sharedEntityCandidates = candidates.filter((e) =>
+    sharesEntity(entityKeySet(e), tEntityKeys),
+  );
+
+  if (sharedEntityCandidates.length > 0) {
+    return latest(sharedEntityCandidates).id;
+  }
+
+  // 4 — Fallback: latest change event regardless of entity overlap.
+  return latest(candidates).id;
 }
