@@ -7,7 +7,7 @@
 - [ ] 2. Core domain
   - [x] 2.1 Define `TimelineEvent`, `Entity`, `Cluster`, `Timeline` types and zod schemas
     - _Requirements: 3.1_
-  - [ ] 2.2 Implement `redact()` with unit tests for AWS keys, bearer tokens, passwords, emails, JWTs
+  - [x] 2.2 Implement `redact()` with unit tests for AWS keys, bearer tokens, passwords, emails, JWTs
     - _Requirements: 9.2_
   - [ ] 2.3 Implement `dedupe()` with tests
     - _Requirements: 3.3_
