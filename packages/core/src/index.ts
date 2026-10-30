@@ -3,3 +3,4 @@ export * from "./types.js";
 export * from "./schemas.js";
 export * from "./redact.js";
 export * from "./dedupe.js";
+export * from "./timeline.js";

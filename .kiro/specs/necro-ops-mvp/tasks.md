@@ -11,7 +11,7 @@
     - _Requirements: 9.2_
   - [x] 2.3 Implement `dedupe()` with tests
     - _Requirements: 3.3_
-  - [ ] 2.4 Implement `buildTimeline()` (sort + union-find clustering) with tests
+  - [x] 2.4 Implement `buildTimeline()` (sort + union-find clustering) with tests
     - _Requirements: 4.1, 4.2, 4.5_
   - [ ] 2.5 Implement `findSuspectedTrigger()` with tests
     - _Requirements: 4.3_
