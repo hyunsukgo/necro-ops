@@ -9,7 +9,7 @@
     - _Requirements: 3.1_
   - [x] 2.2 Implement `redact()` with unit tests for AWS keys, bearer tokens, passwords, emails, JWTs
     - _Requirements: 9.2_
-  - [ ] 2.3 Implement `dedupe()` with tests
+  - [x] 2.3 Implement `dedupe()` with tests
     - _Requirements: 3.3_
   - [ ] 2.4 Implement `buildTimeline()` (sort + union-find clustering) with tests
     - _Requirements: 4.1, 4.2, 4.5_
