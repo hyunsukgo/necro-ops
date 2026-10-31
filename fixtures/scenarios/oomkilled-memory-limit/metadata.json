@@ -1,0 +1,8 @@
+{
+  "id": "scenario-oom-001",
+  "title": "OOMKilled: Memory limit change caused pod crash loop",
+  "description": "A Terraform change increased replica count without adjusting memory limits. Pods began OOMKilling within minutes, causing 5xx errors on the payments service.",
+  "startAt": "2024-10-15T02:00:00Z",
+  "endAt": "2024-10-15T03:30:00Z",
+  "services": ["payments", "payments-worker"]
+}

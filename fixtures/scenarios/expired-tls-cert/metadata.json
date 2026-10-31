@@ -1,0 +1,8 @@
+{
+  "id": "scenario-tls-001",
+  "title": "Expired TLS certificate caused 5xx cascade on API gateway",
+  "description": "An internal TLS certificate for mTLS between the API gateway and auth service expired. The gateway began returning 502 errors, which cascaded to upstream clients. The certificate was not in the rotation schedule.",
+  "startAt": "2024-11-03T08:00:00Z",
+  "endAt": "2024-11-03T10:30:00Z",
+  "services": ["api-gateway", "auth-service", "user-service"]
+}

@@ -1,0 +1,309 @@
+[
+  {
+    "id": "terraform:tf-dep-001",
+    "source": "terraform",
+    "timestamp": "2024-12-01T14:02:30Z",
+    "kind": "deploy",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "checkout" },
+      { "type": "resource", "name": "aws_ecs_service.checkout" }
+    ],
+    "summary": "terraform apply: checkout ECS service updated — image tag v2.4.1→v2.5.0, task definition revision 44→45",
+    "link": "https://app.terraform.io/app/example/runs/run-tf-dep-001",
+    "raw": {
+      "run_id": "run-tf-dep-001",
+      "workspace": "checkout-prod",
+      "status": "applied",
+      "resource_changes": [
+        {
+          "address": "aws_ecs_service.checkout",
+          "change": {
+            "before": { "task_definition": "checkout:44", "image": "checkout:v2.4.1" },
+            "after":  { "task_definition": "checkout:45", "image": "checkout:v2.5.0" }
+          }
+        }
+      ],
+      "applied_at": "2024-12-01T14:02:30Z"
+    }
+  },
+  {
+    "id": "k8s:k8s-dep-001",
+    "source": "k8s",
+    "timestamp": "2024-12-01T14:04:00Z",
+    "kind": "deploy",
+    "severity": "info",
+    "entities": [
+      { "type": "namespace", "name": "prod" },
+      { "type": "service", "name": "checkout" }
+    ],
+    "summary": "Deployment checkout rolled out: 3/3 replicas updated to image checkout:v2.5.0",
+    "raw": {
+      "kind": "Event",
+      "reason": "ScalingReplicaSet",
+      "message": "Scaled up replica set checkout-v2-5-0 to 3",
+      "involvedObject": {
+        "kind": "Deployment",
+        "name": "checkout",
+        "namespace": "prod"
+      },
+      "firstTimestamp": "2024-12-01T14:04:00Z",
+      "lastTimestamp": "2024-12-01T14:04:00Z",
+      "count": 1
+    }
+  },
+  {
+    "id": "datadog:dd-dep-001",
+    "source": "datadog",
+    "timestamp": "2024-12-01T14:06:15Z",
+    "kind": "alert",
+    "severity": "warning",
+    "entities": [
+      { "type": "service", "name": "checkout" }
+    ],
+    "summary": "Monitor alert: checkout service error rate exceeded 3% threshold (current: 7.2%) — NullPointerException in cart calculation",
+    "link": "https://app.datadoghq.com/monitors/33001",
+    "raw": {
+      "id": "dd-dep-001",
+      "monitor_id": 33001,
+      "monitor_name": "checkout error rate",
+      "status": "Alert",
+      "priority": "P2",
+      "tags": ["service:checkout", "env:prod", "version:v2.5.0"],
+      "timestamp": "2024-12-01T14:06:15Z"
+    }
+  },
+  {
+    "id": "datadog:dd-dep-002",
+    "source": "datadog",
+    "timestamp": "2024-12-01T14:08:45Z",
+    "kind": "log",
+    "severity": "critical",
+    "entities": [
+      { "type": "service", "name": "checkout" },
+      { "type": "service", "name": "cart" }
+    ],
+    "summary": "Error spike: checkout service throwing NullPointerException at CartCalculationService.applyDiscounts — discount_code field null for 34% of requests",
+    "link": "https://app.datadoghq.com/logs?query=service%3Acheckout+status%3Aerror",
+    "raw": {
+      "id": "dd-dep-002",
+      "service": "checkout",
+      "status": "error",
+      "message": "NullPointerException: Cannot invoke method applyDiscounts() because discount_code is null",
+      "stack_trace": "CartCalculationService.java:142\nCheckoutController.java:88",
+      "error_count": 847,
+      "tags": ["service:checkout", "env:prod", "version:v2.5.0"],
+      "timestamp": "2024-12-01T14:08:45Z"
+    }
+  },
+  {
+    "id": "datadog:dd-dep-003",
+    "source": "datadog",
+    "timestamp": "2024-12-01T14:09:30Z",
+    "kind": "alert",
+    "severity": "critical",
+    "entities": [
+      { "type": "service", "name": "checkout" }
+    ],
+    "summary": "Monitor alert: checkout service error rate exceeded 20% threshold — P1 incident declared",
+    "link": "https://app.datadoghq.com/monitors/33001",
+    "raw": {
+      "id": "dd-dep-003",
+      "monitor_id": 33001,
+      "monitor_name": "checkout error rate",
+      "status": "Alert",
+      "priority": "P1",
+      "tags": ["service:checkout", "env:prod", "version:v2.5.0"],
+      "timestamp": "2024-12-01T14:09:30Z"
+    }
+  },
+  {
+    "id": "datadog:dd-dep-004",
+    "source": "datadog",
+    "timestamp": "2024-12-01T14:10:00Z",
+    "kind": "metric_anomaly",
+    "severity": "warning",
+    "entities": [
+      { "type": "service", "name": "cart" }
+    ],
+    "summary": "Anomaly: cart service request rate dropped 60% — downstream cascade from checkout failures reducing cart calls",
+    "link": "https://app.datadoghq.com/metrics/summary?filter=service%3Acart",
+    "raw": {
+      "id": "dd-dep-004",
+      "metric": "trace.http.request",
+      "anomaly_type": "drop",
+      "value": 40,
+      "baseline": 100,
+      "tags": ["service:cart", "env:prod"],
+      "timestamp": "2024-12-01T14:10:00Z"
+    }
+  },
+  {
+    "id": "slack:slack-dep-001",
+    "source": "slack",
+    "timestamp": "2024-12-01T14:11:00Z",
+    "kind": "chat",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "checkout" }
+    ],
+    "summary": "On-call engineer alerted: P1 on checkout service, 20%+ error rate, NullPointerException in discount logic — correlates with v2.5.0 deploy at 14:02",
+    "raw": {
+      "ts": "1733061060.000100",
+      "channel": "C_INCIDENTS",
+      "text": "P1 page for checkout service. Seeing NPE in the discount code path. Correlates with v2.5.0 deploy 10 mins ago.",
+      "reactions": [{ "name": "rotating_light", "count": 3 }]
+    }
+  },
+  {
+    "id": "slack:slack-dep-002",
+    "source": "slack",
+    "timestamp": "2024-12-01T14:14:00Z",
+    "kind": "chat",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "checkout" }
+    ],
+    "summary": "Team identified root cause: v2.5.0 introduced discount_code field without null-check, decision to roll back to v2.4.1",
+    "raw": {
+      "ts": "1733061240.000200",
+      "channel": "C_INCIDENTS",
+      "text": "Root cause found — new discount_code field in v2.5.0 CartCalculationService.applyDiscounts() missing null check. Customers without promo codes hit NPE. Decision: roll back to v2.4.1 now.",
+      "reactions": [{ "name": "+1", "count": 4 }]
+    }
+  },
+  {
+    "id": "terraform:tf-dep-002",
+    "source": "terraform",
+    "timestamp": "2024-12-01T14:17:00Z",
+    "kind": "deploy",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "checkout" },
+      { "type": "resource", "name": "aws_ecs_service.checkout" }
+    ],
+    "summary": "terraform apply: checkout ECS service rolled back — image tag v2.5.0→v2.4.1, task definition revision 45→46",
+    "link": "https://app.terraform.io/app/example/runs/run-tf-dep-002",
+    "raw": {
+      "run_id": "run-tf-dep-002",
+      "workspace": "checkout-prod",
+      "status": "applied",
+      "resource_changes": [
+        {
+          "address": "aws_ecs_service.checkout",
+          "change": {
+            "before": { "task_definition": "checkout:45", "image": "checkout:v2.5.0" },
+            "after":  { "task_definition": "checkout:46", "image": "checkout:v2.4.1" }
+          }
+        }
+      ],
+      "applied_at": "2024-12-01T14:17:00Z"
+    }
+  },
+  {
+    "id": "k8s:k8s-dep-002",
+    "source": "k8s",
+    "timestamp": "2024-12-01T14:19:30Z",
+    "kind": "deploy",
+    "severity": "info",
+    "entities": [
+      { "type": "namespace", "name": "prod" },
+      { "type": "service", "name": "checkout" }
+    ],
+    "summary": "Deployment checkout rollback complete: 3/3 replicas running image checkout:v2.4.1",
+    "raw": {
+      "kind": "Event",
+      "reason": "ScalingReplicaSet",
+      "message": "Scaled up replica set checkout-v2-4-1 to 3, scaled down checkout-v2-5-0 to 0",
+      "involvedObject": {
+        "kind": "Deployment",
+        "name": "checkout",
+        "namespace": "prod"
+      },
+      "firstTimestamp": "2024-12-01T14:19:30Z",
+      "lastTimestamp": "2024-12-01T14:19:30Z",
+      "count": 1
+    }
+  },
+  {
+    "id": "slack:slack-dep-003",
+    "source": "slack",
+    "timestamp": "2024-12-01T14:22:00Z",
+    "kind": "chat",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "checkout" }
+    ],
+    "summary": "Rollback confirmed complete: checkout service back on v2.4.1, error rates normalizing, monitoring for 15 minutes before closing",
+    "raw": {
+      "ts": "1733061720.000300",
+      "channel": "C_INCIDENTS",
+      "text": "Rollback done — checkout is back on v2.4.1. Error rate dropping fast. Watching for 15m before we close the P1.",
+      "reactions": [{ "name": "eyes", "count": 2 }]
+    }
+  },
+  {
+    "id": "datadog:dd-dep-005",
+    "source": "datadog",
+    "timestamp": "2024-12-01T14:25:00Z",
+    "kind": "recovery",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "checkout" }
+    ],
+    "summary": "Monitor recovered: checkout service error rate returned below 0.5% threshold after rollback to v2.4.1",
+    "link": "https://app.datadoghq.com/monitors/33001",
+    "raw": {
+      "id": "dd-dep-005",
+      "monitor_id": 33001,
+      "monitor_name": "checkout error rate",
+      "status": "Recovered",
+      "priority": "P1",
+      "tags": ["service:checkout", "env:prod", "version:v2.4.1"],
+      "timestamp": "2024-12-01T14:25:00Z"
+    }
+  },
+  {
+    "id": "k8s:k8s-dep-003",
+    "source": "k8s",
+    "timestamp": "2024-12-01T14:26:00Z",
+    "kind": "recovery",
+    "severity": "info",
+    "entities": [
+      { "type": "namespace", "name": "prod" },
+      { "type": "service", "name": "inventory" }
+    ],
+    "summary": "Deployment inventory: all pods healthy after checkout recovery reduced downstream error propagation",
+    "raw": {
+      "kind": "Event",
+      "reason": "Pulled",
+      "message": "Successfully pulled image inventory:v1.8.3",
+      "involvedObject": {
+        "kind": "Pod",
+        "name": "inventory-3f2d-k7mnp",
+        "namespace": "prod"
+      },
+      "firstTimestamp": "2024-12-01T14:26:00Z",
+      "lastTimestamp": "2024-12-01T14:26:00Z",
+      "count": 1
+    }
+  },
+  {
+    "id": "slack:slack-dep-004",
+    "source": "slack",
+    "timestamp": "2024-12-01T14:38:00Z",
+    "kind": "chat",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "checkout" },
+      { "type": "service", "name": "cart" }
+    ],
+    "summary": "Incident closed: checkout and cart services stable, fix for null-check in discount logic scheduled for v2.5.1 with test coverage",
+    "raw": {
+      "ts": "1733062680.000400",
+      "channel": "C_INCIDENTS",
+      "text": "All services stable — closing P1. Fix will be shipped in v2.5.1 with null-check added and regression test coverage. Post-mortem scheduled for Monday.",
+      "reactions": [{ "name": "white_check_mark", "count": 6 }]
+    }
+  }
+]

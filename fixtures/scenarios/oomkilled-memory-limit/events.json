@@ -1,0 +1,245 @@
+[
+  {
+    "id": "terraform:tf-oom-001",
+    "source": "terraform",
+    "timestamp": "2024-10-15T01:48:00Z",
+    "kind": "infra_change",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "payments" },
+      { "type": "resource", "name": "aws_ecs_task_definition.payments" }
+    ],
+    "summary": "terraform apply: updated payments ECS task definition — replica count 2→4, memory limit unchanged at 256MiB",
+    "link": "https://app.terraform.io/app/example/runs/run-tf-oom-001",
+    "raw": {
+      "run_id": "run-tf-oom-001",
+      "workspace": "payments-prod",
+      "status": "applied",
+      "resource_changes": [
+        {
+          "address": "aws_ecs_task_definition.payments",
+          "change": {
+            "before": { "desired_count": 2, "memory": 256 },
+            "after":  { "desired_count": 4, "memory": 256 }
+          }
+        }
+      ],
+      "applied_at": "2024-10-15T01:48:00Z"
+    }
+  },
+  {
+    "id": "terraform:tf-oom-002",
+    "source": "terraform",
+    "timestamp": "2024-10-15T01:48:22Z",
+    "kind": "infra_change",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "payments-worker" },
+      { "type": "resource", "name": "aws_ecs_task_definition.payments_worker" }
+    ],
+    "summary": "terraform apply: updated payments-worker ECS task definition — replica count 1→2, memory limit unchanged at 256MiB",
+    "link": "https://app.terraform.io/app/example/runs/run-tf-oom-001",
+    "raw": {
+      "run_id": "run-tf-oom-001",
+      "workspace": "payments-prod",
+      "status": "applied",
+      "resource_changes": [
+        {
+          "address": "aws_ecs_task_definition.payments_worker",
+          "change": {
+            "before": { "desired_count": 1, "memory": 256 },
+            "after":  { "desired_count": 2, "memory": 256 }
+          }
+        }
+      ],
+      "applied_at": "2024-10-15T01:48:22Z"
+    }
+  },
+  {
+    "id": "k8s:k8s-oom-001",
+    "source": "k8s",
+    "timestamp": "2024-10-15T02:03:11Z",
+    "kind": "k8s_event",
+    "severity": "warning",
+    "entities": [
+      { "type": "namespace", "name": "prod" },
+      { "type": "pod", "name": "payments-7d8f9c-xkp2q" },
+      { "type": "service", "name": "payments" }
+    ],
+    "summary": "Pod payments-7d8f9c-xkp2q OOMKilled: container exceeded memory limit of 256MiB",
+    "raw": {
+      "kind": "Event",
+      "reason": "OOMKilling",
+      "message": "Memory cgroup out of memory: Kill process 42 (payments) score 1234 or sacrifice child; Killed process 42 (payments) total-vm:400MiB, anon-rss:280MiB",
+      "involvedObject": {
+        "kind": "Pod",
+        "name": "payments-7d8f9c-xkp2q",
+        "namespace": "prod"
+      },
+      "firstTimestamp": "2024-10-15T02:03:11Z",
+      "lastTimestamp": "2024-10-15T02:03:11Z",
+      "count": 1
+    }
+  },
+  {
+    "id": "k8s:k8s-oom-002",
+    "source": "k8s",
+    "timestamp": "2024-10-15T02:05:44Z",
+    "kind": "k8s_event",
+    "severity": "warning",
+    "entities": [
+      { "type": "namespace", "name": "prod" },
+      { "type": "pod", "name": "payments-7d8f9c-mn3tz" },
+      { "type": "service", "name": "payments" }
+    ],
+    "summary": "Pod payments-7d8f9c-mn3tz OOMKilled: container exceeded memory limit of 256MiB",
+    "raw": {
+      "kind": "Event",
+      "reason": "OOMKilling",
+      "message": "Memory cgroup out of memory: Kill process 99 (payments) score 1234 or sacrifice child",
+      "involvedObject": {
+        "kind": "Pod",
+        "name": "payments-7d8f9c-mn3tz",
+        "namespace": "prod"
+      },
+      "firstTimestamp": "2024-10-15T02:05:44Z",
+      "lastTimestamp": "2024-10-15T02:05:44Z",
+      "count": 1
+    }
+  },
+  {
+    "id": "k8s:k8s-oom-003",
+    "source": "k8s",
+    "timestamp": "2024-10-15T02:06:02Z",
+    "kind": "k8s_event",
+    "severity": "critical",
+    "entities": [
+      { "type": "namespace", "name": "prod" },
+      { "type": "pod", "name": "payments-worker-9b2c-r4fwj" },
+      { "type": "service", "name": "payments-worker" }
+    ],
+    "summary": "Pod payments-worker-9b2c-r4fwj CrashLoopBackOff: restarted 5 times in 3 minutes",
+    "raw": {
+      "kind": "Event",
+      "reason": "BackOff",
+      "message": "Back-off restarting failed container",
+      "involvedObject": {
+        "kind": "Pod",
+        "name": "payments-worker-9b2c-r4fwj",
+        "namespace": "prod"
+      },
+      "firstTimestamp": "2024-10-15T02:06:02Z",
+      "lastTimestamp": "2024-10-15T02:06:02Z",
+      "count": 5
+    }
+  },
+  {
+    "id": "datadog:dd-oom-001",
+    "source": "datadog",
+    "timestamp": "2024-10-15T02:04:30Z",
+    "kind": "alert",
+    "severity": "warning",
+    "entities": [
+      { "type": "service", "name": "payments" }
+    ],
+    "summary": "Monitor alert: payments service error rate exceeded 5% threshold (current: 8.3%)",
+    "link": "https://app.datadoghq.com/monitors/12345",
+    "raw": {
+      "id": "dd-oom-001",
+      "monitor_id": 12345,
+      "monitor_name": "payments error rate",
+      "status": "Alert",
+      "priority": "P2",
+      "tags": ["service:payments", "env:prod"],
+      "timestamp": "2024-10-15T02:04:30Z"
+    }
+  },
+  {
+    "id": "datadog:dd-oom-002",
+    "source": "datadog",
+    "timestamp": "2024-10-15T02:07:15Z",
+    "kind": "alert",
+    "severity": "critical",
+    "entities": [
+      { "type": "service", "name": "payments" }
+    ],
+    "summary": "Monitor alert: payments service error rate exceeded 25% threshold — P1 incident declared",
+    "link": "https://app.datadoghq.com/monitors/12345",
+    "raw": {
+      "id": "dd-oom-002",
+      "monitor_id": 12345,
+      "monitor_name": "payments error rate",
+      "status": "Alert",
+      "priority": "P1",
+      "tags": ["service:payments", "env:prod"],
+      "timestamp": "2024-10-15T02:07:15Z"
+    }
+  },
+  {
+    "id": "datadog:dd-oom-003",
+    "source": "datadog",
+    "timestamp": "2024-10-15T02:08:00Z",
+    "kind": "metric_anomaly",
+    "severity": "critical",
+    "entities": [
+      { "type": "service", "name": "payments" }
+    ],
+    "summary": "Anomaly: payments container memory usage spiked to 98% before OOMKill events",
+    "link": "https://app.datadoghq.com/metrics/summary?filter=service%3Apayments",
+    "raw": {
+      "id": "dd-oom-003",
+      "metric": "container.memory.usage",
+      "anomaly_type": "spike",
+      "value": 0.98,
+      "threshold": 0.85,
+      "tags": ["service:payments", "env:prod"],
+      "timestamp": "2024-10-15T02:08:00Z"
+    }
+  },
+  {
+    "id": "k8s:k8s-oom-004",
+    "source": "k8s",
+    "timestamp": "2024-10-15T02:47:00Z",
+    "kind": "infra_change",
+    "severity": "info",
+    "entities": [
+      { "type": "namespace", "name": "prod" },
+      { "type": "service", "name": "payments" }
+    ],
+    "summary": "Deployment payments updated: memory limit increased to 512MiB to resolve OOMKill loop",
+    "raw": {
+      "kind": "Event",
+      "reason": "ScalingReplicaSet",
+      "message": "Scaled down replica set payments-7d8f9c to 0",
+      "involvedObject": {
+        "kind": "Deployment",
+        "name": "payments",
+        "namespace": "prod"
+      },
+      "firstTimestamp": "2024-10-15T02:47:00Z",
+      "lastTimestamp": "2024-10-15T02:47:00Z",
+      "count": 1
+    }
+  },
+  {
+    "id": "datadog:dd-oom-004",
+    "source": "datadog",
+    "timestamp": "2024-10-15T03:02:00Z",
+    "kind": "recovery",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "payments" }
+    ],
+    "summary": "Monitor recovered: payments error rate returned below 1% threshold",
+    "link": "https://app.datadoghq.com/monitors/12345",
+    "raw": {
+      "id": "dd-oom-004",
+      "monitor_id": 12345,
+      "monitor_name": "payments error rate",
+      "status": "Recovered",
+      "priority": "P1",
+      "tags": ["service:payments", "env:prod"],
+      "timestamp": "2024-10-15T03:02:00Z"
+    }
+  }
+]

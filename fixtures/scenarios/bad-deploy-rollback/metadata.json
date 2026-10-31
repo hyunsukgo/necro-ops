@@ -1,0 +1,8 @@
+{
+  "id": "scenario-deploy-001",
+  "title": "Bad deploy caused checkout 500s — rolled back after Slack discussion",
+  "description": "A new version of the checkout service introduced a null-pointer error in the cart calculation path. The on-call team identified the issue via Datadog traces and Slack, coordinated a rollback, and monitored recovery.",
+  "startAt": "2024-12-01T14:00:00Z",
+  "endAt": "2024-12-01T15:45:00Z",
+  "services": ["checkout", "cart", "inventory"]
+}

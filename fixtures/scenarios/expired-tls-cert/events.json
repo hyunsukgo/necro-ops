@@ -1,0 +1,236 @@
+[
+  {
+    "id": "datadog:dd-tls-001",
+    "source": "datadog",
+    "timestamp": "2024-11-03T08:01:45Z",
+    "kind": "alert",
+    "severity": "warning",
+    "entities": [
+      { "type": "service", "name": "api-gateway" }
+    ],
+    "summary": "Monitor alert: api-gateway 5xx rate exceeded 2% threshold (current: 4.1%)",
+    "link": "https://app.datadoghq.com/monitors/22001",
+    "raw": {
+      "id": "dd-tls-001",
+      "monitor_id": 22001,
+      "monitor_name": "api-gateway 5xx rate",
+      "status": "Alert",
+      "priority": "P2",
+      "tags": ["service:api-gateway", "env:prod"],
+      "timestamp": "2024-11-03T08:01:45Z"
+    }
+  },
+  {
+    "id": "datadog:dd-tls-002",
+    "source": "datadog",
+    "timestamp": "2024-11-03T08:03:00Z",
+    "kind": "log",
+    "severity": "critical",
+    "entities": [
+      { "type": "service", "name": "api-gateway" },
+      { "type": "service", "name": "auth-service" }
+    ],
+    "summary": "Log error: TLS handshake failure — certificate has expired (notAfter: 2024-11-03T08:00:00Z) on auth-service endpoint",
+    "link": "https://app.datadoghq.com/logs?query=service%3Aapi-gateway+status%3Aerror",
+    "raw": {
+      "id": "dd-tls-002",
+      "service": "api-gateway",
+      "status": "error",
+      "message": "x509: certificate has expired or is not yet valid: current time 2024-11-03T08:03:00Z is after 2024-11-03T08:00:00Z",
+      "tags": ["service:api-gateway", "env:prod", "upstream:auth-service"],
+      "timestamp": "2024-11-03T08:03:00Z"
+    }
+  },
+  {
+    "id": "datadog:dd-tls-003",
+    "source": "datadog",
+    "timestamp": "2024-11-03T08:05:30Z",
+    "kind": "alert",
+    "severity": "critical",
+    "entities": [
+      { "type": "service", "name": "api-gateway" }
+    ],
+    "summary": "Monitor alert: api-gateway 5xx rate exceeded 25% threshold — P1 incident declared",
+    "link": "https://app.datadoghq.com/monitors/22001",
+    "raw": {
+      "id": "dd-tls-003",
+      "monitor_id": 22001,
+      "monitor_name": "api-gateway 5xx rate",
+      "status": "Alert",
+      "priority": "P1",
+      "tags": ["service:api-gateway", "env:prod"],
+      "timestamp": "2024-11-03T08:05:30Z"
+    }
+  },
+  {
+    "id": "datadog:dd-tls-004",
+    "source": "datadog",
+    "timestamp": "2024-11-03T08:06:15Z",
+    "kind": "metric_anomaly",
+    "severity": "critical",
+    "entities": [
+      { "type": "service", "name": "user-service" }
+    ],
+    "summary": "Anomaly: user-service auth call latency p99 spiked to 18s (baseline 120ms) — requests timing out waiting for auth-service",
+    "link": "https://app.datadoghq.com/metrics/summary?filter=service%3Auser-service",
+    "raw": {
+      "id": "dd-tls-004",
+      "metric": "trace.http.request.duration",
+      "anomaly_type": "spike",
+      "value": 18000,
+      "baseline": 120,
+      "tags": ["service:user-service", "env:prod"],
+      "timestamp": "2024-11-03T08:06:15Z"
+    }
+  },
+  {
+    "id": "k8s:k8s-tls-001",
+    "source": "k8s",
+    "timestamp": "2024-11-03T08:04:10Z",
+    "kind": "k8s_event",
+    "severity": "warning",
+    "entities": [
+      { "type": "namespace", "name": "prod" },
+      { "type": "pod", "name": "api-gateway-6b7d-p9xmn" },
+      { "type": "service", "name": "api-gateway" }
+    ],
+    "summary": "Pod api-gateway-6b7d-p9xmn: readiness probe failing — upstream TLS handshake errors to auth-service",
+    "raw": {
+      "kind": "Event",
+      "reason": "Unhealthy",
+      "message": "Readiness probe failed: HTTP probe failed with statuscode: 503",
+      "involvedObject": {
+        "kind": "Pod",
+        "name": "api-gateway-6b7d-p9xmn",
+        "namespace": "prod"
+      },
+      "firstTimestamp": "2024-11-03T08:04:10Z",
+      "lastTimestamp": "2024-11-03T08:04:10Z",
+      "count": 3
+    }
+  },
+  {
+    "id": "k8s:k8s-tls-002",
+    "source": "k8s",
+    "timestamp": "2024-11-03T08:07:55Z",
+    "kind": "k8s_event",
+    "severity": "critical",
+    "entities": [
+      { "type": "namespace", "name": "prod" },
+      { "type": "service", "name": "auth-service" }
+    ],
+    "summary": "Service auth-service: all endpoints failing health checks — certificate expiry causing connection rejections",
+    "raw": {
+      "kind": "Event",
+      "reason": "FailedMount",
+      "message": "MountVolume.SetUp failed for volume cert-secret: secret auth-tls-cert not found",
+      "involvedObject": {
+        "kind": "Pod",
+        "name": "auth-service-5c9b-w2lxk",
+        "namespace": "prod"
+      },
+      "firstTimestamp": "2024-11-03T08:07:55Z",
+      "lastTimestamp": "2024-11-03T08:07:55Z",
+      "count": 1
+    }
+  },
+  {
+    "id": "slack:slack-tls-001",
+    "source": "slack",
+    "timestamp": "2024-11-03T08:09:00Z",
+    "kind": "chat",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "api-gateway" },
+      { "type": "service", "name": "auth-service" }
+    ],
+    "summary": "On-call engineer reported: api-gateway throwing x509 cert errors against auth-service, cert expired at 08:00 UTC",
+    "raw": {
+      "ts": "1730621340.000100",
+      "channel": "C_INCIDENTS",
+      "text": "[REDACTED: personal name] Here, I'm seeing x509 cert errors in the gateway logs. The cert for auth-service expired at 08:00 UTC. Need someone to rotate it ASAP.",
+      "reactions": [{ "name": "eyes", "count": 4 }]
+    }
+  },
+  {
+    "id": "slack:slack-tls-002",
+    "source": "slack",
+    "timestamp": "2024-11-03T08:15:30Z",
+    "kind": "chat",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "auth-service" }
+    ],
+    "summary": "Team confirmed certificate rotation started for auth-service mTLS cert, estimated 10-minute renewal time",
+    "raw": {
+      "ts": "1730621730.000200",
+      "channel": "C_INCIDENTS",
+      "text": "Confirmed — rotating the auth-service mTLS cert now via cert-manager. Should auto-propagate in ~10m.",
+      "reactions": [{ "name": "white_check_mark", "count": 2 }]
+    }
+  },
+  {
+    "id": "k8s:k8s-tls-003",
+    "source": "k8s",
+    "timestamp": "2024-11-03T08:27:00Z",
+    "kind": "k8s_event",
+    "severity": "info",
+    "entities": [
+      { "type": "namespace", "name": "prod" },
+      { "type": "service", "name": "auth-service" }
+    ],
+    "summary": "Certificate auth-tls-cert renewed and mounted in auth-service pods — pods restarting with new cert",
+    "raw": {
+      "kind": "Event",
+      "reason": "SuccessfulCreate",
+      "message": "Created pod: auth-service-5c9b-q8tvy with renewed cert auth-tls-cert",
+      "involvedObject": {
+        "kind": "ReplicaSet",
+        "name": "auth-service-5c9b",
+        "namespace": "prod"
+      },
+      "firstTimestamp": "2024-11-03T08:27:00Z",
+      "lastTimestamp": "2024-11-03T08:27:00Z",
+      "count": 1
+    }
+  },
+  {
+    "id": "datadog:dd-tls-005",
+    "source": "datadog",
+    "timestamp": "2024-11-03T08:38:00Z",
+    "kind": "recovery",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "api-gateway" }
+    ],
+    "summary": "Monitor recovered: api-gateway 5xx rate returned to below 0.1% after certificate rotation completed",
+    "link": "https://app.datadoghq.com/monitors/22001",
+    "raw": {
+      "id": "dd-tls-005",
+      "monitor_id": 22001,
+      "monitor_name": "api-gateway 5xx rate",
+      "status": "Recovered",
+      "priority": "P1",
+      "tags": ["service:api-gateway", "env:prod"],
+      "timestamp": "2024-11-03T08:38:00Z"
+    }
+  },
+  {
+    "id": "slack:slack-tls-003",
+    "source": "slack",
+    "timestamp": "2024-11-03T08:40:00Z",
+    "kind": "chat",
+    "severity": "info",
+    "entities": [
+      { "type": "service", "name": "api-gateway" },
+      { "type": "service", "name": "auth-service" }
+    ],
+    "summary": "Incident resolved: TLS certificate rotated, error rates back to normal, adding cert to rotation schedule to prevent recurrence",
+    "raw": {
+      "ts": "1730623200.000300",
+      "channel": "C_INCIDENTS",
+      "text": "Error rates look good — incident resolved. Action item: add the auth-service mTLS cert to our automated rotation schedule.",
+      "reactions": [{ "name": "tada", "count": 5 }]
+    }
+  }
+]
