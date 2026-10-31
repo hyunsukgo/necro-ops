@@ -19,7 +19,7 @@
 - [ ] 3. Mock scenarios and mock connector
   - [x] 3.1 Create fixtures for scenarios (a) OOMKilled after Terraform memory change, (b) expired TLS cert, (c) bad deploy + Slack rollback discussion — each with ≥3 sources
     - _Requirements: 7.1, 7.3_
-  - [ ] 3.2 Implement mock `Connector` + normalizer
+  - [x] 3.2 Implement mock `Connector` + normalizer
     - _Requirements: 2.5, 3.1_
   - [ ] 3.3 Golden tests: scenario → expected suspected trigger and cluster count
     - _Requirements: 4.3, 7.1_
