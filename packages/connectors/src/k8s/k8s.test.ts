@@ -218,7 +218,9 @@ describe("k8s connector: isEnabled", () => {
   });
 
   it("is true when KUBECONFIG is present", () => {
-    expect(k8sConnector.isEnabled({ KUBECONFIG: "/home/u/.kube/config" })).toBe(true);
+    expect(
+      k8sConnector.isEnabled({ NECRO_MODE: "live", KUBECONFIG: "/home/u/.kube/config" }),
+    ).toBe(true);
   });
 
   it("has id 'k8s'", () => {

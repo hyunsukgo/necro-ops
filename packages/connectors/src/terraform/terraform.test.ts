@@ -260,6 +260,7 @@ describe("terraform connector: isEnabled", () => {
   it("is true when TERRAFORM_SHOW_JSON_PATH is set", () => {
     expect(
       terraformConnector.isEnabled({
+        NECRO_MODE: "live",
         TERRAFORM_SHOW_JSON_PATH: "/tmp/show.json",
       }),
     ).toBe(true);
@@ -268,6 +269,7 @@ describe("terraform connector: isEnabled", () => {
   it("is true when TERRAFORM_APPLY_LOG_PATH is set", () => {
     expect(
       terraformConnector.isEnabled({
+        NECRO_MODE: "live",
         TERRAFORM_APPLY_LOG_PATH: "/tmp/apply.log",
       }),
     ).toBe(true);

@@ -24,7 +24,7 @@
  * live-mode concern; demo mode never calls `collect()`.
  */
 
-import type { Connector, CollectWindow, RawItem } from "../interface.js";
+import { isLiveMode, type Connector, type CollectWindow, type RawItem } from "../interface.js";
 import type { TimelineEvent } from "@necro-ops/core";
 import { normalizeK8s, K8S_EVENT, K8S_POD } from "./normalize.js";
 
@@ -57,7 +57,7 @@ export const k8sConnector: Connector = {
    * concern. Demo mode has no KUBECONFIG, so the connector is skipped.
    */
   isEnabled(env: NodeJS.ProcessEnv): boolean {
-    return Boolean(env["KUBECONFIG"]);
+    return isLiveMode(env) && Boolean(env["KUBECONFIG"]);
   },
 
   /**
