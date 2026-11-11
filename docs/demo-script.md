@@ -36,11 +36,15 @@ On the autopsy page, click **Exhume**.
 > "Exhume pulls every signal for the incident window from each source in parallel.
 > Watch the connectors report in live."
 
-- Point at the per-connector chips flipping `running → done` (SSE stream).
-- Call out the event counts.
+- Point at the per-connector chips (SSE stream). In demo mode the **mock** chip goes
+  `running → done` with its event count, and **datadog · k8s · terraform · slack** show
+  `skipped` because no credentials are set.
 
-> "Each source speaks a different language. Necro-Ops normalizes them all into one
-> common event shape — this is the Frankenstein stitch."
+> "In demo mode the mock connector replays Datadog, Kubernetes, Terraform and Slack
+> evidence. The real connectors are right there too — skipped, because there are no
+> credentials, and the run carries on. Each source speaks a different language.
+> Necro-Ops normalizes them all into one common event shape — this is the Frankenstein
+> stitch."
 
 ---
 
@@ -55,8 +59,9 @@ Scroll to the **Stitched Timeline**.
 - Point to the ⚡ **suspected trigger** badge on the Terraform change.
 - Use the **source** and **severity** filters to show it updating instantly.
 
-> "The trigger here is the Terraform apply that scaled replicas without raising the
-> memory limit — eight minutes before the first OOMKill."
+> "The trigger here is the Terraform apply on `payments-worker`: it doubled the
+> replicas but left the memory limit at 256 MiB — about fifteen minutes before the
+> first OOMKill, and it shares a service with the first critical alert."
 
 ---
 
@@ -94,7 +99,7 @@ Fade to the ☠ logo.
 ## Shot list / b-roll checklist
 
 - [ ] Morgue page with 3 tombstones
-- [ ] Exhume connector chips animating (running → done)
+- [ ] Exhume connector chips: mock running → done, four real connectors skipped
 - [ ] Timeline with ⚡ trigger badge
 - [ ] Filter dropdowns changing the timeline
 - [ ] Citation click → scroll-to-event highlight
