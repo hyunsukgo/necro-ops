@@ -148,7 +148,7 @@ All connectors are **read-only** — Necro-Ops never writes to or mutates extern
 | Command | What it does |
 |---|---|
 | `pnpm dev` | Run the web app in demo mode |
-| `pnpm test` | Unit tests (Vitest): 423 tests in 20 files across core, connectors, autopsy, db, web |
+| `pnpm test` | Unit tests (Vitest): 426 tests in 21 files across core, connectors, autopsy, db, web |
 | `pnpm e2e` | End-to-end demo flow (Playwright) |
 | `pnpm seed` | Load the mock scenarios into SQLite manually |
 | `pnpm build` | Production build of the web app |
@@ -190,3 +190,9 @@ This project was built spec-first with Kiro:
 - Real-time alerting or paging.
 - Any write action against an external system (no remediation, no posting to Slack).
 - Multi-tenant auth / RBAC.
+
+---
+
+## License
+
+[MIT](LICENSE)
