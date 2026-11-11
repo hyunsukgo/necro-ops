@@ -202,7 +202,9 @@ describe("slack connector: isEnabled", () => {
   });
 
   it("is true when SLACK_BOT_TOKEN is present", () => {
-    expect(slackConnector.isEnabled({ SLACK_BOT_TOKEN: "xoxb-test" })).toBe(true);
+    expect(slackConnector.isEnabled({ NECRO_MODE: "live", SLACK_BOT_TOKEN: "xoxb-test" })).toBe(
+      true,
+    );
   });
 
   it("has id 'slack'", () => {

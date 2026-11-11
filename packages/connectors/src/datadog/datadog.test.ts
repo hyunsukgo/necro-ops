@@ -225,6 +225,7 @@ describe("datadog connector: isEnabled", () => {
   it("is true when both keys are present", () => {
     expect(
       datadogConnector.isEnabled({
+        NECRO_MODE: "live",
         DATADOG_API_KEY: "api",
         DATADOG_APP_KEY: "app",
       }),

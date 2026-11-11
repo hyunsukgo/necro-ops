@@ -64,5 +64,5 @@
 
 - [ ] 9. End-to-end & submission assets
   - [ ] 9.1 Playwright demo flow (scenario a → exhume → autopsy → export)
-  - [ ] 9.2 README (demo-mode quickstart, architecture diagram, how Kiro was used: specs, steering, hooks)
-  - [ ] 9.3 Demo video script (≤3 min) and blog post draft
+  - [x] 9.2 README (demo-mode quickstart, architecture diagram, how Kiro was used: specs, steering, hooks)
+  - [x] 9.3 Demo video script (≤3 min) and blog post draft

@@ -27,8 +27,10 @@ watch each source report in live.
 common `TimelineEvent` shape. Then a union-find pass clusters events that share an entity
 (a service, pod, or resource) and happen close together in time. The result is a single
 chronological timeline instead of four tabs of noise. A small heuristic flags the
-**suspected trigger** — the earliest change event (a deploy or `terraform apply`) that
-precedes the first critical alert and shares an entity with it.
+**suspected trigger** — the latest change event (a deploy or `terraform apply`) before
+the first critical alert that shares an entity with it. If no change shares an entity,
+it falls back to the latest change before the alert; if there is no change at all (the
+expired-certificate scenario), no trigger is flagged.
 
 **Autopsy.** With the timeline in hand, Necro-Ops writes a blameless postmortem: cause
 of death, contributing factors, impact, detection & response, and action items. Every
@@ -64,7 +66,15 @@ auto-seeded on first launch. `pnpm install && pnpm dev` and you're autopsying.
 We built this spec-first. The Kiro spec (`requirements.md`, `design.md`, `tasks.md`) gave
 us EARS-style acceptance criteria, an architecture with explicit interfaces, and a
 numbered task list where every task cites the requirements it satisfies. We implemented
-and checked off the tasks in order, running the test suite after each one.
+and checked off the tasks one at a time, running the test suite after each one.
+
+To make "one task at a time" literal, we added a custom Kiro agent,
+`.kiro/agents/necro-builder.json`. It is scoped to the steering files and the spec, and
+told to do exactly one task per session: read the requirements and design, implement
+only that task, write and run tests, then tick the box. A small wrapper,
+`scripts/kiro-task.sh`, runs one task headless through Kiro CLI. It refuses to start on
+a dirty tree, logs the run, and commits only if the task was actually checked off. So
+the history reads like the plan: one scoped, tested commit per task.
 
 Steering files kept the agent honest across the whole build: the product vision and
 scope, the tech conventions (strict TypeScript, zod at every boundary, "LLM output must
@@ -75,11 +85,12 @@ instead of drifting task to task.
 
 ## What's next
 
-Real connectors are stubbed behind the same interface as the mock — Datadog, Kubernetes,
-Terraform, and Slack each enable themselves when their credentials are present. The
-correlation and autopsy layers don't change at all; they already work against the common
-event shape. Beyond that: richer clustering heuristics, and a diff view across related
-incidents.
+The real Datadog, Kubernetes, Terraform, and Slack connectors already sit behind the
+same interface as the mock. Each turns on only when its credentials are present, is
+read-only, and is tested against provider-shaped fixtures. The Slack one replaces user
+mentions and user ids with a neutral "teammate" token and redacts emails and tokens. The correlation and autopsy layers didn't change at
+all to support them; they only ever see the common event shape. Next: richer clustering
+heuristics, and a diff view across related incidents.
 
 ## Try it
 

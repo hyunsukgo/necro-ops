@@ -23,7 +23,7 @@
  * token, so the connector is skipped and `collect()` is never called.
  */
 
-import type { Connector, CollectWindow, RawItem } from "../interface.js";
+import { isLiveMode, type Connector, type CollectWindow, type RawItem } from "../interface.js";
 import type { TimelineEvent } from "@necro-ops/core";
 import { normalizeSlack, SLACK_CHANNEL_FIELD } from "./normalize.js";
 
@@ -48,7 +48,7 @@ export const slackConnector: Connector = {
    * token, so the connector is skipped.
    */
   isEnabled(env: NodeJS.ProcessEnv): boolean {
-    return Boolean(env[SLACK_TOKEN_ENV]);
+    return isLiveMode(env) && Boolean(env[SLACK_TOKEN_ENV]);
   },
 
   /**

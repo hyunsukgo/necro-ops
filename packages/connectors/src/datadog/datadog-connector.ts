@@ -21,7 +21,7 @@
  * marks the connector `skipped` (not an error).
  */
 
-import type { Connector, CollectWindow, RawItem } from "../interface.js";
+import { isLiveMode, type Connector, type CollectWindow, type RawItem } from "../interface.js";
 import type { TimelineEvent } from "@necro-ops/core";
 import {
   normalizeDatadog,
@@ -60,7 +60,7 @@ export const datadogConnector: Connector = {
 
   /** Enabled only when both Datadog keys are present in the environment. */
   isEnabled(env: NodeJS.ProcessEnv): boolean {
-    return Boolean(env["DATADOG_API_KEY"]) && Boolean(env["DATADOG_APP_KEY"]);
+    return isLiveMode(env) && Boolean(env["DATADOG_API_KEY"]) && Boolean(env["DATADOG_APP_KEY"]);
   },
 
   /**

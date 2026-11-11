@@ -30,7 +30,7 @@
  */
 
 import { readFile } from "node:fs/promises";
-import type { Connector, CollectWindow, RawItem } from "../interface.js";
+import { isLiveMode, type Connector, type CollectWindow, type RawItem } from "../interface.js";
 import type { TimelineEvent } from "@necro-ops/core";
 import {
   normalizeTerraform,
@@ -72,7 +72,7 @@ export const terraformConnector: Connector = {
    */
   isEnabled(env: NodeJS.ProcessEnv): boolean {
     const { showJson, applyLog } = envPaths(env);
-    return Boolean(showJson || applyLog);
+    return isLiveMode(env) && Boolean(showJson || applyLog);
   },
 
   /**
