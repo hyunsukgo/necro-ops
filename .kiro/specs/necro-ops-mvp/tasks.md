@@ -62,7 +62,7 @@
   - [x] 8.4 Report view: citations as links, edit mode, export button
     - _Requirements: 5.2, 5.5, 6.1_
 
-- [ ] 9. End-to-end & submission assets
-  - [ ] 9.1 Playwright demo flow (scenario a → exhume → autopsy → export)
+- [x] 9. End-to-end & submission assets
+  - [x] 9.1 Playwright demo flow (scenario a → exhume → autopsy → export)
   - [x] 9.2 README (demo-mode quickstart, architecture diagram, how Kiro was used: specs, steering, hooks)
   - [x] 9.3 Demo video script (≤3 min) and blog post draft
