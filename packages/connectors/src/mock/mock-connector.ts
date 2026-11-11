@@ -166,6 +166,6 @@ export const mockConnector: Connector = {
       );
       return null;
     }
-    return result.data;
+    return result.data as TimelineEvent;
   },
 };

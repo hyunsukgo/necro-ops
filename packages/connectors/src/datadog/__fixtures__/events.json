@@ -1,0 +1,57 @@
+{
+  "status": "ok",
+  "events": [
+    {
+      "id": 7213948571234001,
+      "title": "[Triggered] High error rate on payments",
+      "text": "5xx error rate is 12.4% (threshold 5%) on service:payments. Runbook: https://wiki.example.com/runbooks/payments api_key=dd-sekret-11112222333344445555666677778888",
+      "date_happened": 1733021070,
+      "alert_type": "error",
+      "priority": "normal",
+      "source": "My Apps",
+      "host": "ip-10-0-3-21",
+      "tags": [
+        "service:payments",
+        "env:prod",
+        "host:ip-10-0-3-21",
+        "team:checkout"
+      ],
+      "url": "/event/event?id=7213948571234001"
+    },
+    {
+      "id": 7213948571234002,
+      "title": "[Warn] Elevated p95 latency on payments",
+      "text": "p95 latency 1.8s (warn threshold 1.5s). Contact oncall@example.com",
+      "date_happened": 1733021235,
+      "alert_type": "warning",
+      "priority": "normal",
+      "source": "My Apps",
+      "tags": [
+        "service:payments",
+        "env:prod",
+        "pod:payments-7d8f9c-xkp2q"
+      ],
+      "url": "/event/event?id=7213948571234002"
+    },
+    {
+      "id": 7213948571234003,
+      "title": "[Recovered] Error rate back to normal on payments",
+      "text": "5xx error rate recovered to 0.3%.",
+      "date_happened": 1733025720,
+      "alert_type": "success",
+      "priority": "normal",
+      "tags": ["service:payments", "env:prod"],
+      "url": "/event/event?id=7213948571234003"
+    },
+    {
+      "id": 7213948571234004,
+      "title": "Deploy finished: payments v3.4.1",
+      "text": "Deployment of payments completed on cluster prod.",
+      "date_happened": 1733020680,
+      "alert_type": "info",
+      "priority": "low",
+      "tags": ["service:payments", "env:prod", "deploy:true"],
+      "url": "/event/event?id=7213948571234004"
+    }
+  ]
+}

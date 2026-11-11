@@ -3,3 +3,9 @@ node_modules/
 *.db
 .env
 .kiro/logs/
+.DS_Store
+:memory:*
+*.tsbuildinfo
+next-env.d.ts
+test-results/
+playwright-report/

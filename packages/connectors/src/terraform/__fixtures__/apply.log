@@ -1,0 +1,8 @@
+2024-10-15T01:47:50Z module.payments.aws_instance.payments: Modifying... [id=i-0abc123def456]
+2024-10-15T01:48:00Z module.payments.aws_instance.payments: Still modifying... [id=i-0abc123def456, 10s elapsed]
+2024-10-15T01:48:02Z module.payments.aws_instance.payments: Modifications complete after 12s [id=i-0abc123def456]
+2024-10-15T01:48:05Z module.payments.aws_security_group.payments: Creating...
+2024-10-15T01:48:07Z module.payments.aws_security_group.payments: Creation complete after 2s [id=sg-0aa11bb22cc33]
+2024-10-15T01:48:10Z module.payments.aws_db_instance.legacy_cache: Destroying... [id=legacy-cache]
+2024-10-15T01:48:16Z module.payments.aws_db_instance.legacy_cache: Destruction complete after 6s
+2024-10-15T01:48:18Z Apply complete! Resources: 1 added, 1 changed, 1 destroyed.

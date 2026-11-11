@@ -16,50 +16,50 @@
   - [x] 2.5 Implement `findSuspectedTrigger()` with tests
     - _Requirements: 4.3_
 
-- [ ] 3. Mock scenarios and mock connector
+- [x] 3. Mock scenarios and mock connector
   - [x] 3.1 Create fixtures for scenarios (a) OOMKilled after Terraform memory change, (b) expired TLS cert, (c) bad deploy + Slack rollback discussion — each with ≥3 sources
     - _Requirements: 7.1, 7.3_
   - [x] 3.2 Implement mock `Connector` + normalizer
     - _Requirements: 2.5, 3.1_
-  - [ ] 3.3 Golden tests: scenario → expected suspected trigger and cluster count
+  - [x] 3.3 Golden tests: scenario → expected suspected trigger and cluster count
     - _Requirements: 4.3, 7.1_
 
-- [ ] 4. Database
-  - [ ] 4.1 Drizzle schema + migrations for incidents, connector_runs, events, timelines, reports
-  - [ ] 4.2 Auto-seed scenarios in demo mode when DB is empty
+- [x] 4. Database
+  - [x] 4.1 Drizzle schema + migrations for incidents, connector_runs, events, timelines, reports
+  - [x] 4.2 Auto-seed scenarios in demo mode when DB is empty
     - _Requirements: 7.2_
 
-- [ ] 5. Exhume orchestrator & API
-  - [ ] 5.1 `POST /api/incidents` with zod validation and window padding
+- [x] 5. Exhume orchestrator & API
+  - [x] 5.1 `POST /api/incidents` with zod validation and window padding
     - _Requirements: 1.1, 1.2, 1.3_
-  - [ ] 5.2 Orchestrator: parallel `allSettled`, per-connector timeout, skipped/failed states, persist events + timeline
+  - [x] 5.2 Orchestrator: parallel `allSettled`, per-connector timeout, skipped/failed states, persist events + timeline
     - _Requirements: 2.1, 2.3, 2.4, 2.6_
-  - [ ] 5.3 SSE progress stream
+  - [x] 5.3 SSE progress stream
     - _Requirements: 2.2_
 
-- [ ] 6. Real connectors (read-only)
-  - [ ] 6.1 Datadog: events + monitors in window, normalizer, fixture-based tests
-  - [ ] 6.2 Kubernetes: events + pod status for namespaces/services, normalizer, tests
-  - [ ] 6.3 Terraform: parse `terraform show -json` + CI apply log upload, normalizer, tests
-  - [ ] 6.4 Slack: channel history in window, normalizer (redacted, no user names in summary), tests
+- [x] 6. Real connectors (read-only)
+  - [x] 6.1 Datadog: events + monitors in window, normalizer, fixture-based tests
+  - [x] 6.2 Kubernetes: events + pod status for namespaces/services, normalizer, tests
+  - [x] 6.3 Terraform: parse `terraform show -json` + CI apply log upload, normalizer, tests
+  - [x] 6.4 Slack: channel history in window, normalizer (redacted, no user names in summary), tests
   - _Requirements: 2.1, 2.4, 2.6, 3.1, 3.2, 5.3, 9.3_
 
-- [ ] 7. Autopsy
-  - [ ] 7.1 `templateReport(timeline)` deterministic generator
+- [x] 7. Autopsy
+  - [x] 7.1 `templateReport(timeline)` deterministic generator
     - _Requirements: 5.1, 5.4_
-  - [ ] 7.2 Prompt file + Bedrock client + zod parsing + citation-existence check + retry/fallback
+  - [x] 7.2 Prompt file + Bedrock client + zod parsing + citation-existence check + retry/fallback
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 9.2_
-  - [ ] 7.3 Report API: generate, save edits (draft flag), Markdown export without raw payloads
+  - [x] 7.3 Report API: generate, save edits (draft flag), Markdown export without raw payloads
     - _Requirements: 5.5, 5.6, 6.1, 6.2_
 
-- [ ] 8. Haunted UI
-  - [ ] 8.1 Theme tokens (AA contrast verified), reduced-motion handling, responsive layout
+- [x] 8. Haunted UI
+  - [x] 8.1 Theme tokens (AA contrast verified), reduced-motion handling, responsive layout
     - _Requirements: 8.2, 8.3, 8.4_
-  - [ ] 8.2 Morgue page: tombstone list + new incident form
+  - [x] 8.2 Morgue page: tombstone list + new incident form
     - _Requirements: 1.4_
-  - [ ] 8.3 Autopsy table: exhume panel, stitched timeline with filters and trigger badge
+  - [x] 8.3 Autopsy table: exhume panel, stitched timeline with filters and trigger badge
     - _Requirements: 2.2, 4.4, 8.1_
-  - [ ] 8.4 Report view: citations as links, edit mode, export button
+  - [x] 8.4 Report view: citations as links, edit mode, export button
     - _Requirements: 5.2, 5.5, 6.1_
 
 - [ ] 9. End-to-end & submission assets

@@ -1,0 +1,91 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.9.5",
+  "resource_changes": [
+    {
+      "address": "aws_instance.payments",
+      "module_address": "module.payments",
+      "mode": "managed",
+      "type": "aws_instance",
+      "name": "payments",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["update"],
+        "before": {
+          "instance_type": "t3.large",
+          "tags": { "Name": "payments", "owner": "oncall@example.com" }
+        },
+        "after": {
+          "instance_type": "t3.medium",
+          "tags": { "Name": "payments", "owner": "oncall@example.com" }
+        }
+      }
+    },
+    {
+      "address": "aws_db_instance.legacy_cache",
+      "module_address": "module.payments",
+      "mode": "managed",
+      "type": "aws_db_instance",
+      "name": "legacy_cache",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["delete"],
+        "before": {
+          "identifier": "legacy-cache",
+          "instance_class": "db.t3.micro"
+        },
+        "after": null
+      }
+    },
+    {
+      "address": "aws_launch_template.payments",
+      "module_address": "module.payments",
+      "mode": "managed",
+      "type": "aws_launch_template",
+      "name": "payments",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["delete", "create"],
+        "before": { "default_version": 7 },
+        "after": { "default_version": 8 }
+      }
+    },
+    {
+      "address": "aws_security_group.payments",
+      "module_address": "module.payments",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "payments",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": { "name": "payments-sg" }
+      }
+    },
+    {
+      "address": "data.aws_ami.base",
+      "mode": "data",
+      "type": "aws_ami",
+      "name": "base",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["read"],
+        "before": null,
+        "after": { "id": "ami-0abc" }
+      }
+    },
+    {
+      "address": "aws_iam_role.unchanged",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "unchanged",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["no-op"],
+        "before": { "name": "r" },
+        "after": { "name": "r" }
+      }
+    }
+  ]
+}

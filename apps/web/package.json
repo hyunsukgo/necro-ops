@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@necro-ops/autopsy": "workspace:*",
+    "@necro-ops/connectors": "workspace:*",
     "@necro-ops/core": "workspace:*",
     "@necro-ops/db": "workspace:*",
     "next": "^15.0.0",

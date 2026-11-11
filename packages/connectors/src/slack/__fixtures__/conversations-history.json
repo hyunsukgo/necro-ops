@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "messages": [
+    {
+      "type": "message",
+      "user": "U01ALICE",
+      "text": "Prod checkout is throwing 500s right after the 14:02 deploy. Starting a thread. ping <@U02BOBBY>",
+      "ts": "1699200180.000100",
+      "team": "T000SRE",
+      "blocks": []
+    },
+    {
+      "type": "message",
+      "user": "U02BOBBY",
+      "text": "Confirmed. error rate for payments is at 40%. The release v2.3.1 by alice.kim@example.com looks suspect. Rolling back now.",
+      "ts": "1699200240.000200",
+      "thread_ts": "1699200180.000100",
+      "team": "T000SRE"
+    },
+    {
+      "type": "message",
+      "user": "U03CAROL",
+      "text": "I set DATADOG_API_KEY=sk-live-ABCD1234567890abcdef in the runbook earlier, redact that from the postmortem please. token=xoxb-FAKE-TOKEN-FOR-TESTS-ONLY should go too.",
+      "ts": "1699200300.000300",
+      "thread_ts": "1699200180.000100",
+      "team": "T000SRE"
+    },
+    {
+      "type": "message",
+      "subtype": "bot_message",
+      "bot_id": "B04DEPLOY",
+      "username": "deploybot",
+      "text": "Rollback of payments to v2.3.0 started by <@U02BOBBY>.",
+      "ts": "1699200360.000400",
+      "thread_ts": "1699200180.000100",
+      "team": "T000SRE"
+    },
+    {
+      "type": "message",
+      "user": "U01ALICE",
+      "text": "Rollback complete, checkout recovered. Error rate back to baseline. Thanks <@U02BOBBY> and <@U03CAROL>.",
+      "ts": "1699200600.000500",
+      "thread_ts": "1699200180.000100",
+      "team": "T000SRE"
+    },
+    {
+      "type": "message",
+      "subtype": "channel_join",
+      "user": "U05DAVE",
+      "text": "<@U05DAVE> has joined the channel",
+      "ts": "1699200620.000600",
+      "team": "T000SRE"
+    }
+  ],
+  "has_more": false,
+  "response_metadata": {
+    "next_cursor": ""
+  }
+}

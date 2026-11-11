@@ -1,0 +1,56 @@
+[
+  {
+    "id": 123456,
+    "name": "[payments] 5xx error rate > 5%",
+    "type": "metric alert",
+    "query": "avg(last_5m):sum:trace.http.request.errors{service:payments,env:prod}.as_rate() > 5",
+    "message": "5xx on payments is high. Escalate to @oncall oncall@example.com Bearer abc123def456ghi789",
+    "overall_state": "Alert",
+    "overall_state_modified": "2024-12-01T02:05:30+00:00",
+    "priority": 1,
+    "tags": ["service:payments", "env:prod", "team:checkout"],
+    "org_id": 321,
+    "modified": "2024-11-20T10:00:00+00:00",
+    "options": {}
+  },
+  {
+    "id": 123457,
+    "name": "[payments] p95 latency",
+    "type": "metric alert",
+    "query": "avg(last_5m):p95:trace.http.request.duration{service:payments} > 1.5",
+    "message": "Latency warning on payments.",
+    "overall_state": "Warn",
+    "overall_state_modified": "2024-12-01T02:06:10+00:00",
+    "priority": 3,
+    "tags": ["service:payments", "env:prod"],
+    "org_id": 321,
+    "modified": "2024-11-20T10:00:00+00:00",
+    "options": {}
+  },
+  {
+    "id": 123458,
+    "name": "[api] availability",
+    "type": "service check",
+    "query": "\"http.can_connect\".over(\"service:api\").last(3).count_by_status()",
+    "message": "API availability OK.",
+    "overall_state": "OK",
+    "overall_state_modified": "2024-12-01T02:08:00+00:00",
+    "tags": ["service:api", "env:prod"],
+    "org_id": 321,
+    "modified": "2024-11-20T10:00:00+00:00",
+    "options": {}
+  },
+  {
+    "id": 123459,
+    "name": "[cart] no data check",
+    "type": "metric alert",
+    "query": "avg(last_5m):sum:cart.orders{*} < 1",
+    "message": "No data from cart.",
+    "overall_state": "No Data",
+    "overall_state_modified": "2024-12-01T02:04:00+00:00",
+    "tags": ["service:cart", "env:prod"],
+    "org_id": 321,
+    "modified": "2024-11-20T10:00:00+00:00",
+    "options": {}
+  }
+]

@@ -1,0 +1,143 @@
+{
+  "kind": "PodList",
+  "apiVersion": "v1",
+  "metadata": {
+    "resourceVersion": "48213991"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "payments-7d8f9c-xkp2q",
+        "namespace": "prod",
+        "uid": "p0d00001-0000-4000-8000-000000000001",
+        "resourceVersion": "48213003",
+        "creationTimestamp": "2024-12-01T03:10:00Z",
+        "labels": {
+          "app": "payments",
+          "pod-template-hash": "7d8f9c"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "payments",
+            "image": "registry.example.com/payments:v3.4.1"
+          }
+        ]
+      },
+      "status": {
+        "phase": "Running",
+        "startTime": "2024-12-01T03:10:05Z",
+        "containerStatuses": [
+          {
+            "name": "payments",
+            "state": {
+              "waiting": {
+                "reason": "CrashLoopBackOff",
+                "message": "back-off 1m20s restarting failed container=payments pod=payments-7d8f9c-xkp2q_prod"
+              }
+            },
+            "lastState": {
+              "terminated": {
+                "exitCode": 137,
+                "reason": "OOMKilled",
+                "startedAt": "2024-12-01T03:23:50Z",
+                "finishedAt": "2024-12-01T03:24:30Z",
+                "containerID": "containerd://aaaa1111"
+              }
+            },
+            "ready": false,
+            "restartCount": 7,
+            "image": "registry.example.com/payments:v3.4.1",
+            "imageID": "registry.example.com/payments@sha256:deadbeef",
+            "containerID": "containerd://bbbb2222",
+            "started": false
+          }
+        ]
+      }
+    },
+    {
+      "metadata": {
+        "name": "checkout-55c6b-abcde",
+        "namespace": "prod",
+        "uid": "p0d00002-0000-4000-8000-000000000002",
+        "resourceVersion": "48213101",
+        "creationTimestamp": "2024-12-01T03:12:00Z",
+        "labels": {
+          "app": "checkout"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "checkout",
+            "image": "registry.example.com/checkout:v2.1.0"
+          }
+        ]
+      },
+      "status": {
+        "phase": "Running",
+        "startTime": "2024-12-01T03:12:05Z",
+        "containerStatuses": [
+          {
+            "name": "checkout",
+            "state": {
+              "running": {
+                "startedAt": "2024-12-01T03:12:08Z"
+              }
+            },
+            "lastState": {},
+            "ready": false,
+            "restartCount": 0,
+            "image": "registry.example.com/checkout:v2.1.0",
+            "imageID": "registry.example.com/checkout@sha256:cafebabe",
+            "containerID": "containerd://cccc3333",
+            "started": true
+          }
+        ]
+      }
+    },
+    {
+      "metadata": {
+        "name": "payments-7d8f9c-ab12c",
+        "namespace": "prod",
+        "uid": "p0d00003-0000-4000-8000-000000000003",
+        "resourceVersion": "48213501",
+        "creationTimestamp": "2024-12-01T03:41:50Z",
+        "labels": {
+          "app": "payments",
+          "pod-template-hash": "7d8f9c"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "payments",
+            "image": "registry.example.com/payments:v3.4.2"
+          }
+        ]
+      },
+      "status": {
+        "phase": "Running",
+        "startTime": "2024-12-01T03:41:55Z",
+        "containerStatuses": [
+          {
+            "name": "payments",
+            "state": {
+              "running": {
+                "startedAt": "2024-12-01T03:42:00Z"
+              }
+            },
+            "lastState": {},
+            "ready": true,
+            "restartCount": 0,
+            "image": "registry.example.com/payments:v3.4.2",
+            "imageID": "registry.example.com/payments@sha256:feedface",
+            "containerID": "containerd://dddd4444",
+            "started": true
+          }
+        ]
+      }
+    }
+  ]
+}

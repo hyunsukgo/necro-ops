@@ -1,3 +1,4 @@
-// Autopsy report generation — Bedrock + template fallback.
-// Placeholder for task 7; exports will grow as tasks are implemented.
-export {};
+// Autopsy report generation — Bedrock LLM + template fallback.
+export { templateReport } from "./template.js";
+export { generate } from "./bedrock.js";
+export type { GenerateOptions } from "./bedrock.js";
