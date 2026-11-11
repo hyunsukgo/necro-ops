@@ -1,7 +1,7 @@
 // Drizzle ORM schema — SQLite (better-sqlite3)
 // Tables: incidents, connector_runs, events, timelines, reports
 
-import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 
 // ── incidents ────────────────────────────────────────────────────────────────

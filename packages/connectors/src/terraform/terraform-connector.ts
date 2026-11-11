@@ -35,7 +35,6 @@ import type { TimelineEvent } from "@necro-ops/core";
 import {
   normalizeTerraform,
   TF_CHANGE,
-  TF_APPLY,
   parseApplyLog,
 } from "./normalize.js";
 

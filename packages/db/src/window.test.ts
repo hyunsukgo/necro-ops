@@ -6,7 +6,7 @@
  *   collection window by a configurable padding (default 30 min before, 15 min after).
  */
 
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect } from "vitest";
 
 // We test the padding logic inline here (the actual padWindow lives in apps/web,
 // but the logic is simple enough to test directly as a pure function).

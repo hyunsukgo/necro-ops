@@ -1,7 +1,7 @@
 // Demo-mode seed: loads fixture scenarios into the DB when the incidents table
 // is empty. Safe to call on every startup — it is a no-op if data exists.
 
-import { eq, count } from "drizzle-orm";
+import { count } from "drizzle-orm";
 import { getDb } from "./client.js";
 import { incidents, events, timelines } from "./schema.js";
 import type {
