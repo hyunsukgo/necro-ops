@@ -29,8 +29,9 @@ Every statement in the report links back to the actual event that supports it.
 
 ## Quickstart (demo mode — no credentials needed)
 
-Judges can run the full experience with **zero configuration**. Three realistic mock
-scenarios are auto-seeded into a local SQLite file on first launch.
+Judges can run the full experience with **zero configuration**. `NECRO_MODE` defaults to
+`demo`: only the mock connector runs, and three realistic mock scenarios are auto-seeded
+into a local SQLite file (`./necro-ops.db`) on first launch.
 
 ```bash
 # 1. Install dependencies (requires Node 22+ and pnpm 9+)
@@ -54,11 +55,17 @@ That's it. The three seeded incidents are ready to exhume and autopsy:
 ### Try the flow
 
 1. Open an incident from the Morgue.
-2. Click **Exhume** — watch per-connector progress stream in live (SSE).
+2. Click **Re-exhume** (the seeded incidents already hold evidence; a new incident shows
+   **Exhume**) — watch per-connector progress stream in live (SSE). In demo mode the
+   `mock` chip finishes and the four real connectors show `skipped`.
 3. See the **stitched timeline** with the ⚡ suspected-trigger badge; filter by source / severity.
-4. Click **Perform Autopsy** — a report is generated (template generator in demo mode).
-5. Citations in the report are clickable — they scroll to the cited event.
+4. Click **Perform Autopsy** — a report is generated (the deterministic template
+   generator unless Bedrock credentials are set).
+5. Citations in the report are clickable — they scroll to the cited event. The report is
+   marked an AI draft until you edit and save the summary.
 6. Click **Export .md** to download the postmortem as Markdown.
+
+You can also file your own incident from the Morgue (title, start/end, services).
 
 ---
 
@@ -118,16 +125,21 @@ necro-ops/
 
 ## Going live (optional)
 
-Copy `.env.example` to `.env` and set `NECRO_MODE=live`. Each real connector runs only
-when its own variables are present; otherwise it shows as `skipped`.
+Copy `.env.example` to `.env` and set `NECRO_MODE=live`. `NECRO_MODE` is the master
+switch (`isLiveMode()` in `packages/connectors/src/interface.ts`):
+
+- `demo` or unset: only the mock connector runs. The real connectors stay `skipped`,
+  even if their credentials are set.
+- `live`: the mock connector is off. Each real connector runs only when its own
+  variables are present; otherwise it shows as `skipped`.
 
 | Connector | Variables | Reads |
 |---|---|---|
-| Datadog | `DATADOG_API_KEY`, `DATADOG_APP_KEY` (optional `DATADOG_SITE`) | events + monitors in the window |
-| Kubernetes | `KUBECONFIG` | events + pod status for the services |
-| Terraform | `TERRAFORM_SHOW_JSON_PATH` and/or `TERRAFORM_APPLY_LOG_PATH` | `terraform show -json` output + CI apply log |
-| Slack | `SLACK_BOT_TOKEN`, `SLACK_CHANNEL_ID` | channel history (redacted; mentions and user ids replaced) |
-| Bedrock | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `BEDROCK_MODEL_ID` | LLM narrative; template fallback without it |
+| Datadog | `DATADOG_API_KEY`, `DATADOG_APP_KEY` (optional `DATADOG_SITE`, default `datadoghq.com`) | events + monitors (GET only) |
+| Kubernetes | `KUBECONFIG` turns it on; it also reads `K8S_API_SERVER` (required), `K8S_TOKEN`, `K8S_NAMESPACE` (default `default`) | events + pod status in one namespace |
+| Terraform | `TERRAFORM_SHOW_JSON_PATH` and/or `TERRAFORM_APPLY_LOG_PATH` | `terraform show -json` output + CI apply log (local files) |
+| Slack | `SLACK_BOT_TOKEN` turns it on; `SLACK_CHANNEL_ID` is also required to collect | `conversations.history` for one channel (see privacy below) |
+| Bedrock | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` (optional `AWS_SESSION_TOKEN`, `BEDROCK_MODEL_ID`) | LLM narrative; template fallback without it. Not gated by `NECRO_MODE` |
 
 Collection windows are padded by `WINDOW_PAD_BEFORE` / `WINDOW_PAD_AFTER` minutes
 (default 30 / 15). The SQLite file path is `DATABASE_URL` (default `./necro-ops.db`).
@@ -137,8 +149,13 @@ All connectors are **read-only** — Necro-Ops never writes to or mutates extern
 ### Security & privacy
 
 - Credentials are read only from environment variables; never persisted or logged.
-- Evidence is **redacted** (API keys, tokens, passwords, emails, JWTs) before it ever
-  reaches the LLM.
+- Event summaries are **redacted** (AWS keys, bearer/API tokens, passwords, emails, JWTs)
+  when each connector normalizes them. The LLM prompt gets summaries only, never raw
+  payloads.
+- **Slack is blameless by construction:** `<@U…>` mentions and bare user/bot ids become
+  "a teammate", the author id never enters the summary, Slack tokens are scrubbed, and
+  join/leave/topic noise is dropped. Summaries are capped at 200 characters. Names typed
+  as plain text are not detected.
 - Raw payloads are stored but **never** included in the exported Markdown.
 
 ---
@@ -148,9 +165,9 @@ All connectors are **read-only** — Necro-Ops never writes to or mutates extern
 | Command | What it does |
 |---|---|
 | `pnpm dev` | Run the web app in demo mode |
-| `pnpm test` | Unit tests (Vitest): 426 tests in 21 files across core, connectors, autopsy, db, web |
-| `pnpm e2e` | End-to-end demo flow (Playwright) |
-| `pnpm seed` | Load the mock scenarios into SQLite manually |
+| `pnpm test` | Unit tests (`vitest run`) across core, connectors, autopsy, db, web. The four real-connector suites hold 78 tests |
+| `pnpm e2e` | End-to-end demo flow (Playwright). Builds and starts the app on port 3123 with a throwaway DB |
+| `pnpm seed` | Load the mock scenarios into SQLite manually (no-op if incidents exist; `pnpm seed -- --force` seeds anyway) |
 | `pnpm build` | Production build of the web app |
 | `pnpm lint` | ESLint |
 

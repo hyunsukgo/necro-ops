@@ -28,8 +28,8 @@ common `TimelineEvent` shape. Then a union-find pass clusters events that share 
 (a service, pod, or resource) and happen close together in time. The result is a single
 chronological timeline instead of four tabs of noise. A small heuristic flags the
 **suspected trigger** — the latest change event (a deploy or `terraform apply`) before
-the first critical alert that shares an entity with it. If no change shares an entity,
-it falls back to the latest change before the alert; if there is no change at all (the
+the first critical event that shares an entity with it. If no change shares an entity,
+it falls back to the latest change before that event; if there is no change at all (the
 expired-certificate scenario), no trigger is flagged.
 
 **Autopsy.** With the timeline in hand, Necro-Ops writes a blameless postmortem: cause
@@ -51,12 +51,14 @@ citation id is checked against the real timeline. If the model hallucinates an e
 or returns malformed JSON, we retry once, and if that fails we fall back to a
 deterministic template report. The app is fully usable with no credentials at all.
 
-**Secrets never leak.** Evidence is redacted (API keys, tokens, passwords, emails, JWTs)
-before it reaches the LLM. Raw payloads are stored but stripped from the exported
+**Secrets never leak.** Each connector redacts its event summaries (AWS keys, tokens,
+passwords, emails, JWTs) as it normalizes them, and the LLM prompt only ever sees those
+summaries, never raw payloads. Raw payloads are stored but stripped from the exported
 Markdown. And nothing Necro-Ops does ever mutates an external system — all connectors are
-read-only.
+read-only (GET requests and local file reads).
 
-**Zero-ops for judges.** Storage is a single SQLite file via Drizzle. In demo mode, three
+**Zero-ops for judges.** Storage is a single SQLite file via Drizzle. `NECRO_MODE=demo`
+is the default, and in it only the mock connector runs. Three
 realistic scenarios — an OOMKill after a Terraform memory change, an expired TLS
 certificate, and a bad deploy that got rolled back after a Slack discussion — are
 auto-seeded on first launch. `pnpm install && pnpm dev` and you're autopsying.
@@ -85,11 +87,14 @@ instead of drifting task to task.
 
 ## What's next
 
-The real Datadog, Kubernetes, Terraform, and Slack connectors already sit behind the
-same interface as the mock. Each turns on only when its credentials are present, is
-read-only, and is tested against provider-shaped fixtures. The Slack one replaces user
-mentions and user ids with a neutral "teammate" token and redacts emails and tokens. The correlation and autopsy layers didn't change at
-all to support them; they only ever see the common event shape. Next: richer clustering
+The real Datadog (events and monitors), Kubernetes (events and pod status), Terraform
+(`terraform show -json` plus CI apply logs), and Slack (channel history) connectors
+already sit behind the same interface as the mock. They switch on with `NECRO_MODE=live`
+plus each connector's own credentials, are read-only, and are tested against
+provider-shaped fixtures. The Slack one keeps the report blameless by construction: user
+mentions and ids become "a teammate", the author id never reaches the summary, and emails
+and tokens are redacted. The correlation and autopsy layers didn't change at all to
+support them; they only ever see the common event shape. Next: richer clustering
 heuristics, and a diff view across related incidents.
 
 ## Try it
@@ -99,5 +104,9 @@ pnpm install
 pnpm dev
 open http://localhost:3000/morgue
 ```
+
+Unit tests run with `pnpm test`, and one Playwright demo flow (open the OOMKilled
+incident, perform the autopsy, export the Markdown) with `pnpm e2e`. The code is MIT
+licensed.
 
 Give your dead incidents the autopsy they deserve. ☠
