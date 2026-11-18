@@ -1,6 +1,6 @@
 # Necro-Ops — Demo Video Script (≤ 3 minutes)
 
-Target length: **2:45**. Record at 1280×720 or larger. Demo mode only — no credentials.
+Target length: **2:45**. Record at 1280×720 or larger. Demo mode only (`NECRO_MODE=demo`, the default) — no credentials.
 Keep the cursor slow and deliberate; let the spooky UI breathe.
 
 ---
@@ -31,18 +31,19 @@ Click the **OOMKilled** incident.
 
 ## 0:45 – 1:20 — Exhume (the Frankenstein moment)
 
-On the autopsy page, click **Exhume**.
+On the autopsy page, click **Re-exhume** (the seeded incident already holds evidence, so the button reads Re-exhume; a fresh incident reads Exhume).
 
 > "Exhume pulls every signal for the incident window from each source in parallel.
 > Watch the connectors report in live."
 
 - Point at the per-connector chips (SSE stream). In demo mode the **mock** chip goes
   `running → done` with its event count, and **datadog · k8s · terraform · slack** show
-  `skipped` because no credentials are set.
+  `skipped`: `NECRO_MODE` is `demo`, so only the mock connector runs.
 
-> "In demo mode the mock connector replays Datadog, Kubernetes, Terraform and Slack
-> evidence. The real connectors are right there too — skipped, because there are no
-> credentials, and the run carries on. Each source speaks a different language.
+> "In demo mode the mock connector replays Datadog, Kubernetes and Terraform evidence
+> from fixtures. The real connectors are right there too — all read-only, and skipped
+> here because the app is in demo mode. Flip `NECRO_MODE=live`, add credentials, and they
+> take over; a failing source never stops the run. Each source speaks a different language.
 > Necro-Ops normalizes them all into one common event shape — this is the Frankenstein
 > stitch."
 
@@ -60,8 +61,8 @@ Scroll to the **Stitched Timeline**.
 - Use the **source** and **severity** filters to show it updating instantly.
 
 > "The trigger here is the Terraform apply on `payments-worker`: it doubled the
-> replicas but left the memory limit at 256 MiB — about fifteen minutes before the
-> first OOMKill, and it shares a service with the first critical alert."
+> replicas from one to two but left the memory limit at 256 MiB — about fifteen minutes
+> before the first OOMKill, and it shares a service with the first critical alert."
 
 ---
 
@@ -76,8 +77,9 @@ Click **Perform Autopsy**.
 - Click a **citation chip** → the page scrolls to the exact source event.
 
 > "Every claim is evidence-backed. Click any citation and it jumps you straight to the
-> event that proves it. No credentials? It uses a deterministic template. With Bedrock
-> configured, Claude writes the narrative — and we still verify every citation exists."
+> event that proves it. No AWS credentials? It uses a deterministic template. With Bedrock
+> configured, Claude writes the narrative — we verify every citation exists, retry once,
+> and fall back to the template if it fails. You can edit the summary before you export."
 
 ---
 
@@ -85,8 +87,8 @@ Click **Perform Autopsy**.
 
 Click **Export .md**.
 
-> "Export to Markdown — timeline table and citations included, raw payloads and secrets
-> stripped out — and paste it straight into your wiki."
+> "Export to Markdown — timeline table and citations included, raw payloads left out,
+> secrets redacted — and paste it straight into your wiki."
 
 On screen: the downloaded Markdown opened in an editor, "Cause of Death" visible.
 
@@ -107,7 +109,8 @@ Fade to the ☠ logo.
 
 ## Recording tips
 
-- Pre-seed by running `pnpm dev` once before recording so first-paint is instant.
+- Pre-seed by running `pnpm dev` once (or `pnpm seed`) before recording so first-paint is instant.
+- Optional close-up: Slack summaries show "a teammate" instead of user mentions (blameless by design).
 - If a connector finishes too fast to see, narrate over it — do not slow the app down.
 - Respect reduced-motion: the UI already honours `prefers-reduced-motion`; record with
   default motion on for visual punch.
